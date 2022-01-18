@@ -7,6 +7,8 @@ const createWindow = () => {
   win = new BrowserWindow({
     width: 800,
     height: 600,
+    minWidth: 800,
+    minHeight: 600,
     titleBarStyle: 'hidden',
     titleBarOverlay: {
       color: '#2f3241',

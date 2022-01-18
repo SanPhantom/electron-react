@@ -1,4 +1,6 @@
 import * as React from 'react';
+import Aside from './Aside';
+import './index.scss'
 
 interface ILayoutsProps {
 }
@@ -8,7 +10,12 @@ const Layouts: React.FunctionComponent<ILayoutsProps> = ({
 }) => {
   return (
     <div className='layout'>
-      <div className='layout'></div>
+      <div className='aside'>
+        <Aside></Aside>
+      </div>
+      <div className='container'>
+        {children}
+      </div>
     </div>
   );
 };
