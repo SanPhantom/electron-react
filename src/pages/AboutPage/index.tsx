@@ -29,7 +29,7 @@ const AboutPage: React.FunctionComponent<IAboutPageProps> = (props) => {
 
   const handleUploadFile = (files: File[]) => {
     console.log(files[0].name);
-    setUpFiles([...upFiles, ...files])
+    setUpFiles([...files])
   }
 
   const handleDeleteFile = (file: File, index: number) => {

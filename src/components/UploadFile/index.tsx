@@ -33,7 +33,7 @@ const UploadFile: React.FunctionComponent<IUploadFileProps> = ({
         cursor: 'pointer',
         padding: '10px'
       }} htmlFor={`update-file-${uuid}`}>
-        <input type="file" id={`update-file-${uuid}`} multiple style={{
+        <input type="file" id={`update-file-${uuid}`} style={{
           position: 'absolute',
           width: '100%',
           height: '100%',
