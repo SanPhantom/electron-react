@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Alert, Box, Button, Divider, SnackbarContent, Stack, styled, TextField, Typography } from '@mui/material'
 import UploadFile from '../../components/UploadFile';
+import { excelTools } from '../../tools';
 
 interface IAboutPageProps {
 }
@@ -26,6 +27,7 @@ const StyledTextField = styled(TextField)({
 const AboutPage: React.FunctionComponent<IAboutPageProps> = (props) => {
 
   const [upFiles, setUpFiles] = React.useState<File[]>([])
+  const [projectName, setProjectName] = React.useState<string>('')
 
   const handleUploadFile = (files: File[]) => {
     console.log(files[0].name);
@@ -36,14 +38,21 @@ const AboutPage: React.FunctionComponent<IAboutPageProps> = (props) => {
     setUpFiles(upFiles.filter((f, i) => i !== index));
   }
 
+  const toJson = () => {
+    excelTools.excel2Json(upFiles[0], projectName, (data: any) => {
+      console.log(data)
+    });
+    
+  }
+
   return (
     <Stack alignItems={"center"} spacing={2}>
       <Typography>Excel to Json</Typography>
       <Divider sx={{width: '100%', borderColor: 'rgba(159,234,249,.12)'}} />
       <Stack sx={{width: '100%'}} spacing={2} alignItems={"center"}>
-        <StyledTextField variant={'outlined'} label={"Project Name"} />
+        <StyledTextField variant={'outlined'} label={"Project Name"} value={projectName} onChange={(e) => setProjectName(e.target.value)} />
         <UploadFile upload={(files) => handleUploadFile(files)} files={upFiles} deleteFile={(file, index) => handleDeleteFile(file, index)} />
-        <Button variant={"contained"}>to json</Button>
+        <Button variant={"contained"} onClick={() => toJson()}>to json</Button>
       </Stack>
     </Stack>
   );

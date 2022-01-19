@@ -71,7 +71,8 @@
     "webpack": "^5.64.4",
     "webpack-dev-server": "^4.6.0",
     "webpack-manifest-plugin": "^4.0.2",
-    "workbox-webpack-plugin": "^6.4.1"
+    "workbox-webpack-plugin": "^6.4.1",
+    "xlsx": "^0.17.5"
   },
   "scripts": {
     "start": "node scripts/start.js",
@@ -98,6 +99,7 @@
     ]
   },
   "devDependencies": {
+    "@types/fs-extra": "^9.0.13",
     "@types/lodash-es": "^4.17.5",
     "electron": "^16.0.7",
     "less": "^4.1.2",
