@@ -28,6 +28,7 @@ const AboutPage: React.FunctionComponent<IAboutPageProps> = (props) => {
 
   const [upFiles, setUpFiles] = React.useState<File[]>([])
   const [projectName, setProjectName] = React.useState<string>('')
+  const [downloadFiles, setDownloadFiles] = React.useState<any[]>([])
 
   const handleUploadFile = (files: File[]) => {
     console.log(files[0].name);
@@ -39,10 +40,29 @@ const AboutPage: React.FunctionComponent<IAboutPageProps> = (props) => {
   }
 
   const toJson = () => {
-    excelTools.excel2Json(upFiles[0], projectName, (data: any) => {
-      console.log(data)
+    excelTools.excel2Json(upFiles[0], projectName).then((res: any[]) => {
+      console.log(res);
+      if (res.length) {
+        setUpFiles([]);
+        setDownloadFiles(res.map(src => {
+          let a: any = {};
+          a.src = src;
+          a.fileName = src.split('/').pop();
+          return a;
+        }))
+      }
     });
     
+  }
+
+  const downloadFile = (src: string, fileName: string, index: number) => {
+    window.electron.downloadFile(src, fileName, (data: any) => {
+      if (data.type === 'update') {
+        console.log('downloading');
+      } else if (data.type === 'done') {
+        console.log('done')
+      }
+    });
   }
 
   return (
@@ -53,6 +73,22 @@ const AboutPage: React.FunctionComponent<IAboutPageProps> = (props) => {
         <StyledTextField variant={'outlined'} label={"Project Name"} value={projectName} onChange={(e) => setProjectName(e.target.value)} />
         <UploadFile upload={(files) => handleUploadFile(files)} files={upFiles} deleteFile={(file, index) => handleDeleteFile(file, index)} />
         <Button variant={"contained"} onClick={() => toJson()}>to json</Button>
+
+        <Stack spacing={1} sx={{width: '100%'}}>
+          {
+            downloadFiles.map((files, index) => (
+              <SnackbarContent key={files.src} message={files.fileName} action={<Button color="info" size="small" onClick={(e) => { downloadFile(files.src, files.fileName, index) }}>
+                  Download
+                </Button>} sx={{
+                  width: '100%',
+                  py: '1px',
+                  backgroundColor: 'transparent',
+                  color: '#ffffff'
+                }} />
+              // <Typography>{files.fileName} --- {files.src}</Typography>
+            ))
+          }
+        </Stack>
       </Stack>
     </Stack>
   );
