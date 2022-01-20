@@ -2,6 +2,7 @@ const { BrowserWindow, app, ipcMain, dialog, shell } = require('electron');
 const pkg = require('./package.json');
 const fs = require('fs');
 const path = require('path');
+const url = require("url")
 
 let win = null;
 let downloadObj = {};
@@ -33,9 +34,13 @@ const createWindow = () => {
   })
   // win.loadFile('./build/index.html')
   if (pkg.isDev) {
-    win.loadURL('http://localhost:3001')
+    win.loadURL('http://localhost:3000')
   } else {
-    window.loadFile('./build/index.html');
+    win.loadURL(url.format({
+      pathname: path.join(__dirname, './index.html'), // 修改
+      protocol: 'file:',
+      slashes: true
+    }));
   }
   win.webContents.openDevTools();
 

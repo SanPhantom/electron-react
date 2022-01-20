@@ -40,6 +40,9 @@ const AboutPage: React.FunctionComponent<IAboutPageProps> = (props) => {
   }
 
   const toJson = () => {
+    if (upFiles.length === 0) {
+      return;
+    }
     excelTools.excel2Json(upFiles[0], projectName).then((res: any[]) => {
       console.log(res);
       if (res.length) {
@@ -52,7 +55,7 @@ const AboutPage: React.FunctionComponent<IAboutPageProps> = (props) => {
         }))
       }
     });
-    
+
   }
 
   const downloadFile = (src: string, fileName: string, index: number) => {
@@ -68,23 +71,29 @@ const AboutPage: React.FunctionComponent<IAboutPageProps> = (props) => {
   return (
     <Stack alignItems={"center"} spacing={2}>
       <Typography>Excel to Json</Typography>
-      <Divider sx={{width: '100%', borderColor: 'rgba(159,234,249,.12)'}} />
-      <Stack sx={{width: '100%'}} spacing={2} alignItems={"center"}>
+      <Divider sx={{ width: '100%', borderColor: 'rgba(159,234,249,.12)' }} />
+      <Stack sx={{ width: '100%' }} spacing={2} alignItems={"center"}>
         <StyledTextField variant={'outlined'} label={"Project Name"} value={projectName} onChange={(e) => setProjectName(e.target.value)} />
         <UploadFile upload={(files) => handleUploadFile(files)} files={upFiles} deleteFile={(file, index) => handleDeleteFile(file, index)} />
         <Button variant={"contained"} onClick={() => toJson()}>to json</Button>
 
-        <Stack spacing={1} sx={{width: '100%'}}>
+
+        <Stack spacing={1} sx={{ width: '100%' }} alignItems={"flex-end"}>
+          {
+            downloadFiles.length >= 2 ? (
+              <Button variant={"text"} onClick={() => toJson()} sx={{textAlign: 'left'}}>download to zip</Button>
+            ) : (<></>)
+          }
           {
             downloadFiles.map((files, index) => (
               <SnackbarContent key={files.src} message={files.fileName} action={<Button color="info" size="small" onClick={(e) => { downloadFile(files.src, files.fileName, index) }}>
-                  Download
-                </Button>} sx={{
-                  width: '100%',
-                  py: '1px',
-                  backgroundColor: 'transparent',
-                  color: '#ffffff'
-                }} />
+                Download
+              </Button>} sx={{
+                width: '100%',
+                py: '1px',
+                backgroundColor: 'transparent',
+                color: '#ffffff'
+              }} />
               // <Typography>{files.fileName} --- {files.src}</Typography>
             ))
           }
