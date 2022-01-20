@@ -18,11 +18,19 @@ const UploadFile: React.FunctionComponent<IUploadFileProps> = ({
 }) => {
 
   const uuid = uniqueId();
+  const [changeFile, setChangeFile] = React.useState('');
 
   const uploadFile = (e: any) => {
     console.log(e.target.files);
+    setChangeFile(e.target.value);
     upload(e.target.files)
   }
+
+  React.useEffect(() => {
+    if (files.length === 0) {
+      setChangeFile('');
+    }
+  }, [files])
 
   return (
     <Stack sx={{width: '100%'}} spacing={2}>
@@ -33,12 +41,12 @@ const UploadFile: React.FunctionComponent<IUploadFileProps> = ({
         cursor: 'pointer',
         padding: '10px'
       }} htmlFor={`update-file-${uuid}`}>
-        <input type="file" id={`update-file-${uuid}`} style={{
+        <input type="file" id={`update-file-${uuid}`} accept='.xlsx,.xlsm,.xls,application/msexcel' style={{
           position: 'absolute',
           width: '100%',
           height: '100%',
           visibility: 'hidden'
-        }} onChange={(e) => { uploadFile(e) }} />
+        }} value={changeFile} onChange={(e) => { uploadFile(e) }} />
         <Stack sx={{
           width: '100%',
           height: '100%',
