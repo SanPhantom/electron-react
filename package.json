@@ -163,21 +163,33 @@
     ]
   },
   "build": {
-    "productName":"Electron Tools",
+    "productName": "Electron Tools",
     "appId": "com.electron.tools",
-    "copyright":"SanPhantom",
+    "copyright": "SanPhantom",
     "extends": null,
-    "directories": { 
+    "directories": {
       "app": "./",
       "buildResources": "build",
       "output": "dist"
-    }, 
-    "win": {  
+    },
+    "win": {
       "icon": "./public/logo512.png",
       "target": [
         "nsis",
         "zip"
       ]
-    }  
+    },
+    "mac": {
+      "target": [
+        "dmg",
+        "zip",
+        "pkg",
+        "mas"
+      ],
+      "hardenedRuntime": true,
+      "entitlements": "electron-builder/entitlements.plist",
+      "entitlementsInherit": "electron-builder/entitlements.plist",
+      "provisioningProfile": "electron-builder/comalibabaslobs.provisionprofile"
+    }
   }
 }
